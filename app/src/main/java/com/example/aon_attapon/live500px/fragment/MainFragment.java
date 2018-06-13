@@ -43,7 +43,7 @@ public class MainFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         initInstances(rootView, savedInstanceState);
         return rootView;
-    
+    }
 
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
