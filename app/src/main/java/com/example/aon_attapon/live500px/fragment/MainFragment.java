@@ -7,9 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.aon_attapon.live500px.R;
 import com.example.aon_attapon.live500px.adapter.PhotoListAdapter;
+import com.example.aon_attapon.live500px.dao.PhotoItemCollectionDao;
+import com.example.aon_attapon.live500px.manager.HttpManager;
+import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -60,6 +70,38 @@ public class MainFragment extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.listView);
         listAdapter = new PhotoListAdapter();
         listView.setAdapter(listAdapter); //connect listView with adapter
+
+        Call<PhotoItemCollectionDao> call = HttpManager.getInstance().getService().loadPhotoList();
+        call.enqueue(new Callback<PhotoItemCollectionDao>() {
+            @Override
+            public void onResponse(Call<PhotoItemCollectionDao> call,
+                                   Response<PhotoItemCollectionDao> response) {
+                if (response.isSuccessful()) {
+                    PhotoItemCollectionDao dao = response.body();
+                    Toast.makeText(Contextor.getInstance().getContext(),
+                            dao.getData().get(0).getCaption(),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    //Handle can connect server but 404
+                    try {
+                        Toast.makeText(Contextor.getInstance().getContext(),
+                                response.errorBody().string(),
+                                Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PhotoItemCollectionDao> call,
+                                  Throwable t) {
+                // Cannot connect server
+                Toast.makeText(Contextor.getInstance().getContext(),
+                        t.toString(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
