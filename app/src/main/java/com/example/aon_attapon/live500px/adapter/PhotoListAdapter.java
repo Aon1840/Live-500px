@@ -5,12 +5,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.aon_attapon.live500px.manager.PhotoListManager;
 import com.example.aon_attapon.live500px.view.PhotoListItem;
 
 public class PhotoListAdapter extends BaseAdapter {
     @Override
     public int getCount() {
-        return 10000;
+        if(PhotoListManager.getInstance().getDao() == null)
+            return 0;
+        if(PhotoListManager.getInstance().getDao().getData() == null)
+            return 0;
+
+        return PhotoListManager.getInstance().getDao().getData().size();
     }
 
     @Override
