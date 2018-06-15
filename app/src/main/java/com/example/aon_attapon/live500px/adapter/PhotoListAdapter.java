@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.aon_attapon.live500px.dao.PhotoItemDao;
 import com.example.aon_attapon.live500px.manager.PhotoListManager;
 import com.example.aon_attapon.live500px.view.PhotoListItem;
 
@@ -21,7 +22,7 @@ public class PhotoListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return PhotoListManager.getInstance().getDao().getData().get(position);
     }
 
     @Override
@@ -37,6 +38,11 @@ public class PhotoListAdapter extends BaseAdapter {
             item = (PhotoListItem) convertView;
         else
             item = new PhotoListItem(parent.getContext());
+
+        PhotoItemDao dao = (PhotoItemDao) getItem(position);
+        item.setNameText(dao.getCaption());
+        item.setDescriptionText(dao.getUsername()+"\n"+dao.getCamera());
+        item.setImageUrl(dao.getImageUrl());
 
         return item;
     }
