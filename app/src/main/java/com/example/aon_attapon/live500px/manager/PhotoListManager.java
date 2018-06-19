@@ -3,7 +3,10 @@ package com.example.aon_attapon.live500px.manager;
 import android.content.Context;
 
 import com.example.aon_attapon.live500px.dao.PhotoItemCollectionDao;
+import com.example.aon_attapon.live500px.dao.PhotoItemDao;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
+
+import java.util.ArrayList;
 
 /**
  * Created by nuuneoi on 11/16/2014.
@@ -23,6 +26,14 @@ public class PhotoListManager {
 
     public void setDao(PhotoItemCollectionDao dao) {
         this.dao = dao;
+    }
+
+    public void insertDaoAtTopPosition(PhotoItemCollectionDao newDao){
+        if(dao == null)
+            dao = new PhotoItemCollectionDao();
+        if(dao.getData() == null)
+            dao.setData(new ArrayList<PhotoItemDao>());
+        dao.getData().addAll(0,newDao.getData()); //save new dao to top position
     }
 
     public int getMaximumId(){
