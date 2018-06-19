@@ -126,6 +126,11 @@ public class MainFragment extends Fragment {
             swipeRefreshLayout.setRefreshing(false);
             if (response.isSuccessful()) {
                 PhotoItemCollectionDao dao = response.body();
+
+                int firstVisiblePosition = listView.getFirstVisiblePosition();
+                View c = listView.getChildAt(0);
+                int top = c == null ? 0 : c.getTop();
+
                 if(mode == MODE_RELOAD_NEWER)
                     photoListManager.insertDaoAtTopPosition(dao);
                 else
@@ -133,6 +138,17 @@ public class MainFragment extends Fragment {
                 listAdapter.setDao(photoListManager.getDao());
 //                    PhotoListManager.getInstance().setDao(dao); //save data from server to singleton dao
                 listAdapter.notifyDataSetChanged();
+
+                if (mode == MODE_RELOAD_NEWER){
+                    //Maintain Scroll Position
+                    int additionalSize = (dao != null && dao.getData() != null) ? dao.getData().size() : 0;
+                    listAdapter.increaseLastPosition(additionalSize);
+                    listView.setSelectionFromTop(firstVisiblePosition + additionalSize,
+                            top);
+                }else{
+
+                }
+
                 Toast.makeText(Contextor.getInstance().getContext(),
                         "Load Completed",
                         Toast.LENGTH_SHORT).show();
