@@ -5,24 +5,32 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.aon_attapon.live500px.dao.PhotoItemCollectionDao;
 import com.example.aon_attapon.live500px.dao.PhotoItemDao;
 import com.example.aon_attapon.live500px.manager.PhotoListManager;
 import com.example.aon_attapon.live500px.view.PhotoListItem;
 
 public class PhotoListAdapter extends BaseAdapter {
+
+    PhotoItemCollectionDao dao;
+
+    public void setDao(PhotoItemCollectionDao dao) {
+        this.dao = dao;
+    }
+
     @Override
     public int getCount() {
-        if(PhotoListManager.getInstance().getDao() == null)
+        if(dao == null)
             return 0;
-        if(PhotoListManager.getInstance().getDao().getData() == null)
+        if(dao == null)
             return 0;
 
-        return PhotoListManager.getInstance().getDao().getData().size();
+        return dao.getData().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return PhotoListManager.getInstance().getDao().getData().get(position);
+        return dao.getData().get(position);
     }
 
     @Override
