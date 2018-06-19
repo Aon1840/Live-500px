@@ -114,7 +114,7 @@ public class MainFragment extends Fragment {
         int maxId = photoListManager.getMaximumId();
         Call<PhotoItemCollectionDao> call = HttpManager.getInstance()
                 .getService()
-                .loadPhotoListAdterId(maxId);
+                .loadPhotoListAfterId(maxId);
         call.enqueue(new Callback<PhotoItemCollectionDao>() {
             @Override
             public void onResponse(Call<PhotoItemCollectionDao> call, Response<PhotoItemCollectionDao> response) {

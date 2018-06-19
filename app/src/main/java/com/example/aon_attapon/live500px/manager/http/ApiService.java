@@ -12,5 +12,5 @@ public interface ApiService {
     Call<PhotoItemCollectionDao> loadPhotoList();
 
     @POST("list/after/{id}")
-    Call<PhotoItemCollectionDao> loadPhotoListAdterId(@Path("id") int id);
+    Call<PhotoItemCollectionDao> loadPhotoListAfterId(@Path("id") int id);
 }
