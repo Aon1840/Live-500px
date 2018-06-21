@@ -7,7 +7,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,6 +38,7 @@ public class MainFragment extends Fragment {
     PhotoListAdapter listAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
     PhotoListManager photoListManager;
+    Button btnNewPhoto;
 
     public MainFragment() {
         super();
@@ -73,6 +77,15 @@ public class MainFragment extends Fragment {
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
         photoListManager = new PhotoListManager();
+
+        btnNewPhoto = (Button) rootView.findViewById(R.id.btnNewPhoto);
+        btnNewPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listView.smoothScrollToPosition(0);
+                hideButtonNewPhoto();
+            }
+        });
 
         listView = (ListView) rootView.findViewById(R.id.listView);
         listAdapter = new PhotoListAdapter();
@@ -145,6 +158,9 @@ public class MainFragment extends Fragment {
                     listAdapter.increaseLastPosition(additionalSize);
                     listView.setSelectionFromTop(firstVisiblePosition + additionalSize,
                             top);
+
+                    if (additionalSize > 0)
+                        showButtonNewPhoto();
                 }else{
 
                 }
@@ -214,6 +230,24 @@ public class MainFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void onRestoreInstanceState(Bundle savedInstanceState) {
         // Restore Instance State here
+    }
+
+    public void showButtonNewPhoto(){
+        btnNewPhoto.setVisibility(View.VISIBLE);
+        Animation anim = AnimationUtils.loadAnimation(
+                Contextor.getInstance().getContext(),
+                R.anim.zoom_fade_in
+        );
+        btnNewPhoto.setAnimation(anim);
+    }
+
+    public void hideButtonNewPhoto(){
+        btnNewPhoto.setVisibility(View.GONE);
+        Animation anim = AnimationUtils.loadAnimation(
+                Contextor.getInstance().getContext(),
+                R.anim.zoom_fade_out
+        );
+        btnNewPhoto.setAnimation(anim);
     }
 
 }
