@@ -35,12 +35,15 @@ import retrofit2.Response;
 @SuppressWarnings("unused")
 public class MainFragment extends Fragment {
 
+    //Variables
     ListView listView;
     PhotoListAdapter listAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
     PhotoListManager photoListManager;
     Button btnNewPhoto;
 
+
+    //Functions
     public MainFragment() {
         super();
     }
@@ -60,6 +63,9 @@ public class MainFragment extends Fragment {
 
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
+
+        //initialize fragment level's variable
+        photoListManager = new PhotoListManager();
     }
 
     @Override
@@ -77,7 +83,6 @@ public class MainFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
-        photoListManager = new PhotoListManager();
 
         btnNewPhoto = (Button) rootView.findViewById(R.id.btnNewPhoto);
         btnNewPhoto.setOnClickListener(new View.OnClickListener() {
@@ -252,6 +257,8 @@ public class MainFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // Save Instance State here
+
+        //TODO: Save PhotolistManager to outState
     }
 
     /*
@@ -262,7 +269,7 @@ public class MainFragment extends Fragment {
         // Restore Instance State here
     }
 
-    public void showButtonNewPhoto() {
+    private void showButtonNewPhoto() {
         btnNewPhoto.setVisibility(View.VISIBLE);
         Animation anim = AnimationUtils.loadAnimation(
                 Contextor.getInstance().getContext(),
@@ -271,7 +278,7 @@ public class MainFragment extends Fragment {
         btnNewPhoto.setAnimation(anim);
     }
 
-    public void hideButtonNewPhoto() {
+    private void hideButtonNewPhoto() {
         btnNewPhoto.setVisibility(View.GONE);
         Animation anim = AnimationUtils.loadAnimation(
                 Contextor.getInstance().getContext(),
