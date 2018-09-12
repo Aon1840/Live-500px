@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.aon_attapon.live500px.R;
 import com.example.aon_attapon.live500px.adapter.PhotoListAdapter;
 import com.example.aon_attapon.live500px.dao.PhotoItemCollectionDao;
+import com.example.aon_attapon.live500px.datatype.MutableInteger;
 import com.example.aon_attapon.live500px.manager.HttpManager;
 import com.example.aon_attapon.live500px.manager.PhotoListManager;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
@@ -41,6 +42,7 @@ public class MainFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     PhotoListManager photoListManager;
     Button btnNewPhoto;
+    MutableInteger lastPositionInteger;
 
 
     //Functions
@@ -81,6 +83,8 @@ public class MainFragment extends Fragment {
 
     private void init(Bundle savedInstanceState) {
         // Init Fragment level's variable(s) here
+        photoListManager = new PhotoListManager();
+        lastPositionInteger = new MutableInteger(-1);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -97,7 +101,7 @@ public class MainFragment extends Fragment {
         });
 
         listView = (ListView) rootView.findViewById(R.id.listView);
-        listAdapter = new PhotoListAdapter();
+        listAdapter = new PhotoListAdapter(lastPositionInteger);
         listAdapter.setDao(photoListManager.getDao());
         listView.setAdapter(listAdapter); //connect listView with adapter
 
@@ -265,6 +269,7 @@ public class MainFragment extends Fragment {
 
         //TODO: Save PhotolistManager to outState
         outState.putBundle("photoListManager",photoListManager.onSaveInstanceState());
+        outState.putBundle("lassPositionInteger", lastPositionInteger.onsaveInstanceState());
     }
 
     /*
@@ -274,6 +279,7 @@ public class MainFragment extends Fragment {
     private void onRestoreInstanceState(Bundle savedInstanceState) {
         // Restore Instance State here
         photoListManager.onRestoreInstance(savedInstanceState.getBundle("photoListManager"));
+        lastPositionInteger.onRestroeInstanceState(savedInstanceState.getBundle("lastPositionInteger"));
     }
 
     private void showButtonNewPhoto() {
