@@ -1,6 +1,7 @@
 package com.example.aon_attapon.live500px.manager;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.example.aon_attapon.live500px.dao.PhotoItemCollectionDao;
 import com.example.aon_attapon.live500px.dao.PhotoItemDao;
@@ -78,5 +79,15 @@ public class PhotoListManager {
         if (dao.getData() == null)
             return 0;
         return dao.getData().size();
+    }
+
+    public Bundle onSaveInstanceState(){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("dao",dao);
+        return bundle;
+    }
+
+    public void onRestoreInstance(Bundle saveInstanceState){
+        dao = saveInstanceState.getParcelable("dao");
     }
 }

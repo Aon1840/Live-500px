@@ -61,11 +61,14 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         init(savedInstanceState);
 
+        photoListManager = new PhotoListManager();
+
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState);
 
         //initialize fragment level's variable
-        photoListManager = new PhotoListManager();
+
+
     }
 
     @Override
@@ -95,6 +98,7 @@ public class MainFragment extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.listView);
         listAdapter = new PhotoListAdapter();
+        listAdapter.setDao(photoListManager.getDao());
         listView.setAdapter(listAdapter); //connect listView with adapter
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
@@ -125,7 +129,8 @@ public class MainFragment extends Fragment {
             }
         });
 
-        refreshData();
+        if (savedInstanceState == null)
+            refreshData();
     }
 
     private void refreshData() {
@@ -259,6 +264,7 @@ public class MainFragment extends Fragment {
         // Save Instance State here
 
         //TODO: Save PhotolistManager to outState
+        outState.putBundle("photoListManager",photoListManager.onSaveInstanceState());
     }
 
     /*
@@ -267,6 +273,7 @@ public class MainFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void onRestoreInstanceState(Bundle savedInstanceState) {
         // Restore Instance State here
+        photoListManager.onRestoreInstance(savedInstanceState.getBundle("photoListManager"));
     }
 
     private void showButtonNewPhoto() {
