@@ -1,5 +1,6 @@
 package com.example.aon_attapon.live500px.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,9 @@ import com.example.aon_attapon.live500px.manager.HttpManager;
 import com.example.aon_attapon.live500px.manager.PhotoListManager;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import retrofit2.Call;
@@ -85,6 +89,20 @@ public class MainFragment extends Fragment {
         // Init Fragment level's variable(s) here
         photoListManager = new PhotoListManager();
         lastPositionInteger = new MutableInteger(-1);
+
+        File dir = getContext().getDir("Hello", Context.MODE_PRIVATE);
+        //get path internal storage
+        Log.d("Storage", String.valueOf(dir));
+        File file = new File(dir, "testfile.txt");
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write("hello".getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings("UnusedParameters")
